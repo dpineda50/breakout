@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Gamedev Canvas Workshop</title>
+	<style >
+		* {padding: 0; margin: 0; }
+		canvas {background: #eee; display: block; margin: 0 auto;}
+	</style>
+<head>
+<body>
+
+<canvas id="myCanvas" width="480" height="320"></canvas>
+<script >
+	var canvas = document.getElementById("myCanvas");
+	var ctx = canvas.getContext("2d");
+
+	var balls = [];
+	var ballCount = 100;
+
+	var velocityX = [];
+	var velocityY = [];
+
+	var accelerationX = [];
+	var accelerationY = [];
+
+	var ballRadius = 5;
+
+	function init() {
+		for(i = 0; i < ballCount; i++){
+			var tempX = Math.floor(Math.random() * canvas.width);
+			var tempY = Math.floor(Math.random() * canvas.height);
+			balls[i] = {x : tempX, y: tempY};
+
+			velocityX[i] = Math.random();
+			velocityY[i] = Math.random();
+		}
+
+
+	}
+
+	function drawBall() {
+		for(i = 0; i < ballCount; i++) {
+			ctx.beginPath();
+			ctx.arc(balls[i].x,balls[i].y,ballRadius,0,2*Math.PI);
+			ctx.fillStyle = "#0095DD";
+			ctx.fill();
+			ctx.closePath();
+		}
+	}
+	function motion() {
+		for(i = 0 ; i<ballCount; i++) {
+			balls[i].x += velocityX[i];
+			balls[i].y += velocityY[i];
+		}
+
+	}
+	function draw() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		drawBall();
+		motion();
+
+		for(i=0; i < ballCount; i++) {
+			if(balls[i].x < 0 || balls[i].x > canvas.width) {
+				velocityX[i] = -velocityX[i];
+			}
+			if(balls[i].y < 0 || balls[i].y > canvas.height) {
+				velocityY[i] = -velocityY[i];
+			}
+		}
+		requestAnimationFrame(draw);
+	}
+	init();
+	draw();
+</script>
+
+</body>
+</html>
