@@ -180,17 +180,24 @@ function draw(){
 
 	console.log(paused);
 }
+
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 document.addEventListener("mousemove", mouseMoveHandler, false);
 
 function mouseMoveHandler(e) {
 	var relativeX = e.clientX - canvas.offsetLeft;
-	if(relativeX > paddleWidth/2 && relativeX < canvas.width-paddleWidth/2) {
+	if(relativeX > paddleWidth/2 && relativeX < canvas.width-paddleWidth/2 && !paused) {
 		paddleX = relativeX - paddleWidth/2;
 	}
 }
 function keyDownHandler(e){
+	if(paused) {
+		if(e.keyCode == 32) {
+			paused = !paused;
+		}
+		return;
+	}
 	if(e.keyCode == 39){
 		rightPressed = true;
 	}
@@ -203,6 +210,9 @@ function keyDownHandler(e){
 }
 
 function keyUpHandler(e){
+	if(paused) {
+		return;
+	}
 	if(e.keyCode == 39){
 		rightPressed = false;
 	}
